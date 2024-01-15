@@ -28,6 +28,12 @@ This is a full stack implementation of the employee montoring web application. T
 
 ## 2. Backend Setup (Python - Django) `./Backend`
 
+    - Navigate into the Backend folder.
+
+    ```bash
+    cd ./Backend/
+    ```
+
 - `./UserAPI/models.py` contains all the db models.
 
 - `./UserAPI/admin.py` is where the admin module gets registered for devs to have a look at the visual representation of the Django admin dashboard.
@@ -40,13 +46,7 @@ This is a full stack implementation of the employee montoring web application. T
 
 ---
 
-1. Navigate into the Backend folder.
-
-    ```bash
-    cd ./Backend/
-    ```
-
-2. Create and activate the virtual environment and install the python dependencies for the same.
+1. Create and activate the virtual environment and install the python dependencies for the same.
 
     ```bash
     python venv .venv
@@ -54,19 +54,19 @@ This is a full stack implementation of the employee montoring web application. T
     pip install django djangorestframework python-dotenv logging
     ```
 
-3. Apply migration settings, and run the server.
+2. Apply migration settings, and run the server.
 
     ```bash
     python manage.py migrate
     ```
 
-4. Create a new super user with your own credentials.
+3. Create a new super user with your own credentials.
 
     ```bash
     python manage.py createsuperuser
     ```
 
-5. Create a new file `.env` and ensure the environment variable names are the same as provided.
+4. Create a new file `.env` and ensure the environment variable names are the same as provided.
 
     `.env`
 
@@ -85,13 +85,13 @@ This is a full stack implementation of the employee montoring web application. T
     python manage.py migrate
     ```
 
-6. You access your admin login page at `http://127.0.0.1:8000/admin` and create some sample users for testing purposes.
+5. You access your admin login page at `http://127.0.0.1:8000/admin` and create some sample users for testing purposes.
 
     ```bash
     python manage.py migrate
     ```
 
-7. Run the following command to start the backend server.
+6. Run the following command to start the backend server.
 
     ```bash
     python manage.py runserver
