@@ -21,5 +21,6 @@ from UserAPI import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('employees/', views.employee_list),
-    path('login/', views.employee_login)
+    path('login/', views.employee_login),
+    path('logout/', views.employee_logout)
 ]

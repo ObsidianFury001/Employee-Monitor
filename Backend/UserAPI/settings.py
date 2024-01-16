@@ -47,6 +47,13 @@ INSTALLED_APPS = [
 
 ASGI_APPLICATION = 'UserAPI.asgi.application'
 
+# For local development only.
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    }
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
