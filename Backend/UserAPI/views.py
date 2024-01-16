@@ -84,7 +84,7 @@ def employee_login(req):
                 req.session['name'] = serializer.data['name']
                 
                 # Log session information
-                logging.info("Session data: %s", req.session)
+                logging.info("Session data: %s", req.session["username"])
 
                 # Return serialized results        
                 return Response(res, status=status.HTTP_200_OK)

@@ -28,7 +28,7 @@ This is a full stack implementation of the employee montoring web application. T
 
 ## 2. Backend Setup (Python - Django) `./Backend`
 
-    - Navigate into the Backend folder.
+- Navigate into the Backend folder.
 
     ```bash
     cd ./Backend/
@@ -51,7 +51,7 @@ This is a full stack implementation of the employee montoring web application. T
     ```bash
     python venv .venv
     . .venv/scripts/activate        
-    pip install django djangorestframework python-dotenv logging
+    pip install -r requirements.txt
     ```
 
 2. Apply migration settings, and run the server.
