@@ -7,7 +7,24 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-import logging
+
+import hashlib
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+def hash_username(username):
+    # Generate a random salt (you can use a user-specific salt if needed)
+    salt = os.environ.get('username_HASH_SALT')
+
+    # Combine the username and salt
+    salted_username = f"{username}{salt}"
+
+    # Hash the salted username using a secure hashing algorithm (e.g., SHA-256)
+    hashed_username = hashlib.sha256(salted_username.encode()).hexdigest()
+
+    return hashed_username, salt
 
 @api_view(['GET', 'POST'])
 def employee_list(req):
@@ -20,18 +37,22 @@ def employee_list(req):
                 # Serialize results 
                 serializedData = EmployeeSerializer(allRecords, many = True)
 
-                # Return serialized results           
+                # Return serialized results   
                 res = {
-                    "data": serializedData.data,
-                    "success": True,
+                    "result": {
+                        "data": serializedData.data,
+                        "success": True,
+                    }
                 }
                 return Response(res, status=status.HTTP_200_OK)
             
-            res = {
-                "data": [],
-                "success": False,
-                "message": "No records found."
-            }  
+            res =  {
+                "result": {
+                    "data": [],
+                    "success": False,
+                    "message": "No records found."
+                }  
+            }
             return Response(res, status=status.HTTP_404_NOT_FOUND)
             
         # Additional function
@@ -47,20 +68,24 @@ def employee_list(req):
                 }
                 return Response(res, status=status.HTTP_201_CREATED)          
               
-            res = {
-                "data": [],
-                "success": False,
-                "message": "Invalid data passed."
+            res =  {
+                "result": {
+                    "data": [],
+                    "success": False,
+                    "message": "Invalid data passed."
+                }
             }  
             return Response(res, status=status.HTTP_406_NOT_ACCEPTABLE)
 
     except Exception as e:
         # Return error response if there's an exception
-        res = {
-            "data": [],
-            "success": False,
-            "message": "Server error occurred.",
-            "error_message": str(e)
+        res =  {
+            "result": {
+                "data": [],
+                "success": False,
+                "message": "Server error occurred.",
+                "error_message": str(e)
+            }
         }
         return Response(res, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
@@ -81,11 +106,15 @@ def employee_login(req):
                 checkUser.save()
 
                 serializer = EmployeeSerializer(checkUser, many=False)
+                token = hash_username(serializer.data['username'])
                 res = {
-                    "data": serializer.data,
-                    "success": True,
-                    "message": "Successfully logged in."
-                }  
+                    "result": {
+                        "data": serializer.data,
+                        "success": True,
+                        "message": "Successfully logged in.",
+                        "token": token
+                    }  
+                }
 
                 current_channel = get_channel_layer()
                 async_to_sync(current_channel.group_send) (
@@ -98,31 +127,29 @@ def employee_login(req):
                         "status": serializer.data['status'],
                     }
                 )
-                req.session['id'] = serializer.data['id']
-                req.session['username'] = serializer.data['username']
-                req.session['name'] = serializer.data['name']
-                
-                # Log session information
-                logging.info("Session data: %s", req.session["username"])
 
                 # Return serialized results        
                 return Response(res, status=status.HTTP_202_ACCEPTED)
             
             res = {
-                "data": [],
-                "success": False,
-                "message": "Invalid username or password."
-            }  
+                "result": {
+                    "data": [],
+                    "success": False,
+                    "message": "Invalid username or password."
+                }  
+            }
             return Response(res, status=status.HTTP_401_UNAUTHORIZED)
             
 
     except Exception as e:
         # Return error response if there's an exception
-        res = {
-            "data": [],
-            "success": False,
-            "message": "Server error occurred.",
-            "error_message": str(e)
+        res =  {
+            "result": {
+                "data": [],
+                "success": False,
+                "message": "Server error occurred.",
+                "error_message": str(e)
+            }
         }
         return Response(res, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
@@ -139,14 +166,16 @@ def employee_logout(req):
             if checkUser:
                 # Serialize results 
                 serializer = EmployeeSerializer(checkUser, many=False)
-                serializer.status = True
+                serializer.status = False
                 serializer.save()
 
                 res = {
-                    "data": serializer.data,
-                    "success": True,
-                    "message": "Successfully logged in."
-                }  
+                    "result": {
+                        "data": serializer.data,
+                        "success": True,
+                        "message": "Successfully logged in."
+                    }  
+                }
                 req.session['id'] = serializer.data['id']
                 req.session['username'] = serializer.data['username']
                 req.session['name'] = serializer.data['name']
@@ -161,27 +190,29 @@ def employee_logout(req):
                         'status': serializer.data.status
                     }
                 )
-                # Log session information
-                logging.info("Session data: %s", req.session["username"])
 
                 # Return serialized results        
                 return Response(res, status=status.HTTP_200_OK)
             
-            res = {
-                "data": [],
-                "success": False,
-                "message": "Invalid username or password."
-            }  
+            res =  {
+                "result": {
+                    "data": [],
+                    "success": False,
+                    "message": "Invalid username or password."
+                }  
+            }
             return Response(res, status=status.HTTP_401_UNAUTHORIZED)
             
 
     except Exception as e:
         # Return error response if there's an exception
         res = {
-            "data": [],
-            "success": False,
-            "message": "Server error occurred.",
-            "error_message": str(e)
+            "result": {
+                "data": [],
+                "success": False,
+                "message": "Server error occurred.",
+                "error_message": str(e)
+            }
         }
         return Response(res, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     

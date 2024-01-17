@@ -28,7 +28,7 @@ This is a full stack implementation of the employee montoring web application. T
 
 ## 2. Backend Setup (Python - Django) `./Backend`
 
-- Navigate into the Backend folder.
+- Navigate into the Backend directory.
 
     ```bash
     cd ./Backend/
@@ -98,3 +98,23 @@ This is a full stack implementation of the employee montoring web application. T
     ```
 
 ## 3. Frontend Setup (React) `./Frontend`
+
+- Navigate into the Frontend directory.
+
+    ```bash
+    cd ./Frontend/
+    ```
+
+1. Create a new file `.env` and ensure the environment variable names are the same as provided.
+
+    `.env`
+
+    ```bash
+    HOST_URL=http://127.0.0.1:8000
+    ```
+
+2. Run the following command to start the frontend server.
+
+    ```bash
+    npm run dev
+    ```
