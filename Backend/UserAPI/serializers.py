@@ -6,4 +6,4 @@ from .models import EMPLOYEES_DB
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = EMPLOYEES_DB
-        fields = ('id', 'name', 'username', 'age', 'status')
+        fields = ('id', 'name', 'username', 'age', 'status', 'last_seen')

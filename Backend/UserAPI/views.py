@@ -6,6 +6,7 @@ from rest_framework import status
 from channels.layers import get_channel_layer
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
+from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -99,6 +100,7 @@ def employee_login(req):
 
             if checkUser:
                 checkUser.status = 2
+                checkUser.last_seen = timezone.now() 
                 checkUser.save()
 
                 serializer = EmployeeSerializer(checkUser, many=False)

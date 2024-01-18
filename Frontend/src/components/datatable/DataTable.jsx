@@ -67,13 +67,11 @@ function DataTable({ columns, data }) {
                                             <TableHead key={header.id}>
                                                 <Button className={cn("px-2")}
                                                     variant="ghost"
-                                                    onClick={header.column.getToggleSortingHandler()}
-                                                >
+                                                    onClick={header.column.getToggleSortingHandler()}>
                                                     {
                                                         flexRender(header.column.columnDef.header,
                                                             header.getContext())
                                                     }
-
                                                     {
                                                         {
                                                             asc: flexRender(<ArrowUp className="ml-2 h-4 w-4"></ArrowUp>),
@@ -89,7 +87,6 @@ function DataTable({ columns, data }) {
                             <TableBody>
                                 {
                                     table.getRowModel().rows?.length ?
-
                                         table.getRowModel().rows.map((row) => (
                                             <TableRow key={row.id}
                                                 className="h-12 px-2">
@@ -103,8 +100,8 @@ function DataTable({ columns, data }) {
                                         <TableRow>
                                             <TableCell
                                                 colSpan={columns.length}
-                                                className="h-24 text-center">
-                                                No results.
+                                                className="h-16 text-lg font-light text-center">
+                                                No employee data found.
                                             </TableCell>
                                         </TableRow>
                                 }
@@ -122,16 +119,14 @@ function DataTable({ columns, data }) {
                             variant="outline"
                             size="sm"
                             onClick={() => table.previousPage()}
-                            disabled={!table.getCanPreviousPage()}
-                        >
+                            disabled={!table.getCanPreviousPage()}>
                             Previous
                         </Button>
                         <Button
                             variant="outline"
                             size="sm"
                             onClick={() => table.nextPage()}
-                            disabled={!table.getCanNextPage()}
-                        >
+                            disabled={!table.getCanNextPage()}>
                             Next
                         </Button>
                     </div>

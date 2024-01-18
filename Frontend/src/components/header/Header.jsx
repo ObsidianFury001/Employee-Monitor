@@ -61,7 +61,6 @@ function Logo() {
 	)
 }
 
-
 function Header({ user, updateState }) {
 	const [theme, setTheme] = useState('dark')
 	const navigate = useNavigate();
@@ -74,13 +73,13 @@ function Header({ user, updateState }) {
 	}, [theme])
 
 	const Logout = async () => {
-		const LOGIN_URL = `http://127.0.0.1:8000/logout/`
+		const LOGOUT_URL = `http://127.0.0.1:8000/logout/`
 		let req = { id: user.id}
-		const res = await axios.post(LOGIN_URL, req,)
+		const res = await axios.post(LOGOUT_URL, req)
 								.then((res) => res.data)
 								.catch((err) => console.error(err));
 		console.log(res)
-		setTimeout(() => navigate('/'), 500)
+		navigate('/')
 	}
 
 	const toggleTheme = (prev) => {

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge"
-import { Ghost } from "lucide-react";
 import { cn } from "@/lib/utils";
  
 export function BadgeDemo() {
@@ -24,8 +23,12 @@ const StatusCell = ({ getValue, row, column, table }) => {
   return (
     <div>
       {value == 0? 
-        <Badge className="px-5 py-1.5">Offline</Badge>    :  
-        <Badge className="bg-teal-500 px-5 py-1.5">Online</Badge>     
+        <Badge className={cn("bg-gray-950 dark:bg-primary text-white px-5 py-1.5", "font-semibold")}>
+          Offline
+        </Badge>    :  
+        <Badge className={cn("bg-primary dark:bg-teal-500 px-5 py-1.5", "font-semibold")}>
+          Online
+        </Badge>     
       }
     </div>
   );

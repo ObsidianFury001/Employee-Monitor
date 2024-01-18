@@ -76,6 +76,7 @@ This is a full stack implementation of the employee montoring web application. T
     DATABASE_PASS=YOUR_PASSWORD
     DATABASE_HOST=_YOUR_HOST
     DABTASE_PORT=3306
+    EMAIL_HASH_SALT=YOUR_SUPER_SECRET_SALT_KEY
     ```
 
     The final setup is to add and apply the migration settings.
@@ -97,7 +98,7 @@ This is a full stack implementation of the employee montoring web application. T
     python manage.py runserver
     ```
 
-## 3. Frontend Setup (React) `./Frontend`
+## 3. Frontend Setup (React - Shadncn and TailwindCSS) `./Frontend`
 
 - Navigate into the Frontend directory.
 
@@ -105,15 +106,7 @@ This is a full stack implementation of the employee montoring web application. T
     cd ./Frontend/
     ```
 
-1. Create a new file `.env` and ensure the environment variable names are the same as provided.
-
-    `.env`
-
-    ```bash
-    HOST_URL=http://127.0.0.1:8000
-    ```
-
-2. Run the following command to start the frontend server.
+1. Run the following command to start the frontend server.
 
     ```bash
     npm run dev
