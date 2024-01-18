@@ -36,8 +36,14 @@ function Login({ user, updateState }) {
 					"username": Username,
 					"password": Password
 				}
-				const res = await axios.post(`http://127.0.0.1:8000/login/`, req);
+				const LOGIN_URL = `http://127.0.0.1:8000/login/`
+				const res = await axios.post(LOGIN_URL, req)
+										.then((res) => res.data)
+										.catch((err) => console.error(err));
 
+				if (res.success)
+					setTimeout(() => navigate('/home'), 500)
+				console.log(res);
 			} catch (error) {
 				setError(error);
 				console.log("ERROR: " + error)
@@ -65,17 +71,20 @@ function Login({ user, updateState }) {
 	return (
 		<div className="relative overflow-hidden
 						grid place-items-center
-						bg-cover bg-center bg-no-repeat
-						h-[calc(100vh-3rem)] md:h-[calc(100vh-5rem)] dark:bg-transparent"
+						bg-cover bg-no-repeat
+						w-full
+						h-[calc(100vh-3rem)] md:h-[calc(100vh-5rem)]"
 			style={{
+				backgroundPosition: "absolute",
 				backgroundImage: `url('https://images.unsplash.com/photo-1548602088-9d12a4f9c10f?q=80&w=2052&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
+
 			}}>
 			<div className="w-[80%] sm:w-[350px]">
 				<form>
-					<Card className="px-2 md:px-6 lg:py-4
-                      			shadow-lg shadow-gray-400/25 dark:shadow-blue-500/45">
+					<Card className="px-1 sm:px-2 md:px-6 lg:py-4
+                    	  			shadow-lg shadow-gray-500/25 dark:shadow-blue-600/45">
 						<CardHeader>
-							<CardTitle className="text-3xl font-bold leading-tight tracking-wide lg:leading-[1.1]">Login</CardTitle>
+							<CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight tracking-wide lg:leading-[1.1]">Login</CardTitle>
 							<CardDescription className="text-blue-600">Login to access activity dashboard.</CardDescription>
 						</CardHeader>
 						<CardContent>

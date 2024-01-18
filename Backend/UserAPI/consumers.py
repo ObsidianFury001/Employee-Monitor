@@ -28,6 +28,7 @@ class EmployeeConsumer(WebsocketConsumer):
                 'type': 'new_login',
                 'message': message,
                 'id': data['id'],
+                'username': data['username'],
                 'status': data['status']
             }
             async_to_sync(self.channel_layer.group_send)(

@@ -39,19 +39,15 @@ def employee_list(req):
 
                 # Return serialized results   
                 res = {
-                    "result": {
-                        "data": serializedData.data,
-                        "success": True,
-                    }
+                    "data": serializedData.data,
+                    "success": True,
                 }
                 return Response(res, status=status.HTTP_200_OK)
             
             res =  {
-                "result": {
-                    "data": [],
-                    "success": False,
-                    "message": "No records found."
-                }  
+                "data": [],
+                "success": False,
+                "message": "No records found."
             }
             return Response(res, status=status.HTTP_404_NOT_FOUND)
             
@@ -108,12 +104,10 @@ def employee_login(req):
                 serializer = EmployeeSerializer(checkUser, many=False)
                 token = hash_username(serializer.data['username'])
                 res = {
-                    "result": {
-                        "data": serializer.data,
-                        "success": True,
-                        "message": "Successfully logged in.",
-                        "token": token
-                    }  
+                    "data": serializer.data,
+                    "success": True,
+                    "message": "Successfully logged in.",
+                    "token": token
                 }
 
                 current_channel = get_channel_layer()
@@ -132,11 +126,9 @@ def employee_login(req):
                 return Response(res, status=status.HTTP_202_ACCEPTED)
             
             res = {
-                "result": {
                     "data": [],
                     "success": False,
                     "message": "Invalid username or password."
-                }  
             }
             return Response(res, status=status.HTTP_401_UNAUTHORIZED)
             
@@ -144,12 +136,10 @@ def employee_login(req):
     except Exception as e:
         # Return error response if there's an exception
         res =  {
-            "result": {
                 "data": [],
                 "success": False,
                 "message": "Server error occurred.",
                 "error_message": str(e)
-            }
         }
         return Response(res, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
@@ -170,15 +160,10 @@ def employee_logout(req):
                 serializer.save()
 
                 res = {
-                    "result": {
-                        "data": serializer.data,
-                        "success": True,
-                        "message": "Successfully logged in."
-                    }  
+                    "data": serializer.data,
+                    "success": True,
+                    "message": "Successfully logged in."
                 }
-                req.session['id'] = serializer.data['id']
-                req.session['username'] = serializer.data['username']
-                req.session['name'] = serializer.data['name']
                 
                 current_channel_layer = get_channel_layer()
                 async_to_sync(current_channel_layer.group_send) (
@@ -195,11 +180,9 @@ def employee_logout(req):
                 return Response(res, status=status.HTTP_200_OK)
             
             res =  {
-                "result": {
-                    "data": [],
-                    "success": False,
-                    "message": "Invalid username or password."
-                }  
+                "data": [],
+                "success": False,
+                "message": "Invalid username or password."
             }
             return Response(res, status=status.HTTP_401_UNAUTHORIZED)
             
@@ -207,12 +190,10 @@ def employee_logout(req):
     except Exception as e:
         # Return error response if there's an exception
         res = {
-            "result": {
-                "data": [],
-                "success": False,
-                "message": "Server error occurred.",
-                "error_message": str(e)
-            }
+            "data": [],
+            "success": False,
+            "message": "Server error occurred.",
+            "error_message": str(e)
         }
         return Response(res, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     

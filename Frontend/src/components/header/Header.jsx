@@ -9,7 +9,7 @@ function Logo() {
 	return (
 			<svg xmlns="http://www.w3.org/2000/svg" width="512" height="160" viewBox="0 0 512 160" style={{ overflow: 'hidden'}}
 				data-bbox="48 195.063 416 121.874"
-				className='absolute flex justify-center items-center w-52'>
+				className='absolute flex justify-center items-center w-40 md:w-52'>
 				{/* <rect data-uid="o_fbk1ae922_8" data-fl-background="" x="0" y="0" width="512" height="160" fill="#0f0b38"></rect> */}
 				<defs transform="matrix(0.9486423239214371, 0, 0, 0.9486423239214371, 13.1476009128976, 13.14759779707157)"
 					data-uid="o_fbk1ae922_9">
@@ -96,11 +96,12 @@ function Header({ user, updateState }) {
 				enableSystem
 				disableTransitionOnChange>
 				<header className="w-full 
-									h-14 md:h-20 
-									px-4 
+									h-12 md:h-20 
+									px-4 mx-auto
 									flex justify-between items-center
-									bg-gradient-to-tl from-gray-900 to-gray-950 mx-auto
-									shadow-md shadow-gray-800 dark:shadow-blue-600/45">
+									bg-gradient-to-tl from-gray-900 to-gray-950
+									shadow-md shadow-gray-800
+									dark:shadow-lg dark:shadow-blue-600/45">
 					<div className="container px-1 md:px-8
 									flex justify-between items-center">
 					<div className="left flex items-center">
