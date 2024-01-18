@@ -51,12 +51,11 @@ class EmployeeConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps(res))
 
     def disconnect(self, text_data ):
-        message = 'An employee has logged off: ' + str(self.user_id) + ' Status: ' 
-        print(self.status)
+        message = 'An employee has logged off: ' + str(self.user_id)
         
         res = {
             'type': 'status_offline',
-            'message': message,
+            'message': 'An employee has logged off.',
             'id': self.user_id,
             'status': 0
         }
