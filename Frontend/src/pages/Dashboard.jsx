@@ -142,8 +142,10 @@ function Dashboard({user, updateState}) {
 		<section className="container grid place-items-center
 							p-5">
 
-			<h1 className='text-2xl font-bold mb-5'>Employee Dashboard {JSON.stringify(newUser.id)}
-			: {JSON.stringify(newUser.name)}</h1>
+			<h1 className='text-2xl font-bold mb-5'>
+				Employee Dashboard 
+				{/* {JSON.stringify(newUser.id)} : {JSON.stringify(newUser.name)} */}
+			</h1>
 			{
 				
 				loading? (
