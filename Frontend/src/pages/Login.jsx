@@ -37,12 +37,21 @@ function Login({ user, updateState }) {
 					"password": Password
 				}
 				const LOGIN_URL = `http://127.0.0.1:8000/login/`
-				const res = await axios.post(LOGIN_URL, req)
+				const res = await axios.post(LOGIN_URL, req,)
 										.then((res) => res.data)
 										.catch((err) => console.error(err));
-
-				if (res.success)
+						
+				if (res.success) {			
+					// updateState=(res.data) 
+					updateState({
+						"id": res.data.id,
+						"name": res.data.name,
+						"username": res.data.username,
+						"email": res.data.email,
+						"token": res.token,
+					  })	
 					setTimeout(() => navigate('/home'), 500)
+				}
 				console.log(res);
 			} catch (error) {
 				setError(error);

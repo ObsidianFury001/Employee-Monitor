@@ -31,7 +31,7 @@ import columns from '@/components/datatable/Columns';
 import { ArrowUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-function Dashboard() {
+function Dashboard({user, updateState}) {
 	// Dashboard States
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
@@ -51,7 +51,6 @@ function Dashboard() {
 			let res = await axios.get(`http://127.0.0.1:8000/employees/`)
 				.then((res) => res.data)
 				.catch((err) => console.error(err));
-
 			setData(res.data)
 			setLoading(false);
 		} catch (error) {
@@ -60,7 +59,13 @@ function Dashboard() {
 		} finally {
 			setLoading(false);
 		}
+			console.log("🚀 ~ GetEmployeeList ~ res.data:", res.data)
 	}
+
+	const ValidateUser = () => {
+		console.log(user.id)
+	};
+
 
 	const updateNewUser = useCallback((data) => {
 		setNewUser((prevUser) => ({
@@ -78,7 +83,6 @@ function Dashboard() {
 	const handleStatusUpdate = (data) => {
 		console.log('Handling new user id & status:', data);
 	};
-
 
 	const newSocket = (id, status) => {
 
@@ -117,6 +121,7 @@ function Dashboard() {
 	}
 
 	useEffect(() => {
+		ValidateUser();
 		GetEmployeeList()
 		// newSocket();
 	}, [])

@@ -3,26 +3,23 @@ import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import Cookies from 'universal-cookie'
+import useCookie from "./hooks/UseCookie"
 
 function App() {
-  const [user, setUser] = useState({
-    "id": null,
-    "name": "",
-    "username": "",
-    "email": ""
-  })
+  const [cookie, setCookie, removeCookie] = useCookie('user', '{}')
 
-  const updateUser = (newState) => {
-    setUser(newState);
-  };
+	const Logout = () => {
+		removeCookie()
+	}
 
   return (
     <>
       <div className='w-full h-screen'>
-        <Header user={user} updateState={setUser} />
+        <Header user={cookie} updateState={setCookie} />
         <Routes>
-          <Route path='/' element={<Login user={user} updateState={updateUser} />} />
-          <Route path='/home' element={<Dashboard />} />
+          <Route path='/' element={<Login user={cookie} updateState={setCookie} />} />
+          <Route path='/home' element={<Dashboard user={cookie} updateState={setCookie}/>} />
         </Routes>
       </div>
     </>

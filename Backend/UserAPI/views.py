@@ -107,7 +107,7 @@ def employee_login(req):
                     "data": serializer.data,
                     "success": True,
                     "message": "Successfully logged in.",
-                    "token": token
+                    "token": token[0]
                 }
 
                 current_channel = get_channel_layer()

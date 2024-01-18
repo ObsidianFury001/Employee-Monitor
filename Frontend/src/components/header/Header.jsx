@@ -70,8 +70,6 @@ function Header({ user, updateState }) {
 
 		root.classList.remove("light", "dark")
 		root.classList.add(theme)
-
-		return
 	}, [theme])
 
 	const Logout = () => {
@@ -110,13 +108,12 @@ function Header({ user, updateState }) {
 					</div>
 					<nav className="right flex justify-end items-center gap-1 md:gap-4">
 						{
-							user.id ?
-								<Button variant="outline" onClick={Logout}>
-										<h6 className='hidden md:block'>Logout</h6>
-										<LogOut className="m-0 md:ml-2 
-															w-4 h-4" />
-								</Button>
-								: <></>
+							
+							<Button variant="outline" onClick={Logout}>
+									<h6 className='hidden md:block'>Logout</h6>
+									<LogOut className="m-0 md:ml-2 
+														w-4 h-4" />
+							</Button>
 						}
 						<Button variant="default" size="icon"
 							onClick={toggleTheme} >
