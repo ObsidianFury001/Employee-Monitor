@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { LogOut, Sun, Moon } from 'lucide-react';
 import { ThemeProvider } from "@/components/theme-provider"
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Logo() {
 	return (
@@ -72,15 +73,14 @@ function Header({ user, updateState }) {
 		root.classList.add(theme)
 	}, [theme])
 
-	const Logout = () => {
-		updateState({
-			"id": null,
-			"name": "",
-			"username": "",
-			"email": ""
-		});
-
-		navigate('/')
+	const Logout = async () => {
+		const LOGIN_URL = `http://127.0.0.1:8000/logout/`
+		let req = { id: user.id}
+		const res = await axios.post(LOGIN_URL, req,)
+								.then((res) => res.data)
+								.catch((err) => console.error(err));
+		console.log(res)
+		setTimeout(() => navigate('/'), 500)
 	}
 
 	const toggleTheme = (prev) => {

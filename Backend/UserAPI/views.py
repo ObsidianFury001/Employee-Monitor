@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from channels.layers import get_channel_layer
+from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -97,8 +98,7 @@ def employee_login(req):
                                                     password=password).first()
 
             if checkUser:
-                # Serialize results 
-                checkUser.status = True           
+                checkUser.status = 2
                 checkUser.save()
 
                 serializer = EmployeeSerializer(checkUser, many=False)
@@ -118,7 +118,7 @@ def employee_login(req):
                         "message": "New User " + serializer.data['username'] + " has logged in.",       
                         'id': serializer.data['id'],
                         'username': serializer.data['username'],
-                        "status": serializer.data['status'],
+                        "status": 2,
                     }
                 )
 
@@ -128,9 +128,9 @@ def employee_login(req):
             res = {
                     "data": [],
                     "success": False,
-                    "message": "Invalid username or password."
+                    "message": "Post route does not exists found."
             }
-            return Response(res, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(res, status=status.HTTP_400_BAD_REQUEST)
             
 
     except Exception as e:
@@ -143,52 +143,54 @@ def employee_login(req):
         }
         return Response(res, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-    
 @api_view(['POST'])
-def employee_logout(req):    
-    try:         
+def employee_logout(req):
+    try:
         if req.method == "POST":
             id = req.data.get('id')
+            print("🚀 ~ id:", id)
 
-            # Search credentials 
-            checkUser = EMPLOYEES_DB.objects.filter(pk=id)
+            # Search credentials
+            checkUser = EMPLOYEES_DB.objects.filter(pk=id).first()  # Use .first() to get an instance
 
             if checkUser:
-                # Serialize results 
-                serializer = EmployeeSerializer(checkUser, many=False)
-                serializer.status = False
-                serializer.save()
+                checkUser.status = 0
+                checkUser.save()
 
-                res = {
-                    "data": serializer.data,
-                    "success": True,
-                    "message": "Successfully logged in."
-                }
-                
-                current_channel_layer = get_channel_layer()
-                async_to_sync(current_channel_layer.group_send) (
-                    'AstudioRoom',
+                serializer = EmployeeSerializer(checkUser, many=False)
+
+                current_channel = get_channel_layer()
+                async_to_sync(current_channel.group_send) (
+                    "AstudioRoom",
                     {
-                        'type': 'new_login',
-                        'message': 'A new employee has logged in',
-                        'id': serializer.data.id,
-                        'status': serializer.data.status
+                        "type": "status_offline",
+                        "message": "A User " + serializer.data['username'] + " has logged out.",
+                        'id': serializer.data['id'],
+                        'username': serializer.data['username'],
+                        "status": 0,
                     }
                 )
+                res = {
+                    "success": True,
+                    "message": "Successfully logged out."
+                }
 
-                # Return serialized results        
                 return Response(res, status=status.HTTP_200_OK)
-            
-            res =  {
-                "data": [],
+
+            res = {
                 "success": False,
-                "message": "Invalid username or password."
+                "message": "Employee does not exist."
             }
-            return Response(res, status=status.HTTP_401_UNAUTHORIZED)
-            
+            return Response(res, status=status.HTTP_404_NOT_FOUND)
+
+        res = {
+            "data": [],
+            "success": False,
+            "message": "Post route does not exist."
+        }
+        return Response(res, status=status.HTTP_400_BAD_REQUEST)
 
     except Exception as e:
-        # Return error response if there's an exception
         res = {
             "data": [],
             "success": False,
@@ -196,4 +198,3 @@ def employee_logout(req):
             "error_message": str(e)
         }
         return Response(res, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    

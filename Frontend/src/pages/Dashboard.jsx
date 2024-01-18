@@ -1,48 +1,19 @@
 import { useState, useEffect, useCallback } from 'react'
 import axios from 'axios';
 import WebSocketClient from 'websocket';
-
-// Buttons
-import { Button } from '@/components/ui/button';
-import ColumnFilter from '@/components/datatable/ColumnFilter';
-
+import DataTable from '@/components/datatable/DataTable';
+import columns from '@/components/datatable/Columns';
 // Icons
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
-// Datatables
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/components/ui/table"
-
-import {
-	flexRender,
-	getCoreRowModel,
-	getFilteredRowModel,
-	getPaginationRowModel,
-	getSortedRowModel,
-	useReactTable,
-} from "@tanstack/react-table"
-import columns from '@/components/datatable/Columns';
-import { ArrowUpDown } from 'lucide-react';
-import { cn } from '@/lib/utils';
-
 function Dashboard({user, updateState}) {
+	let counter = 0;
+	// Loading states
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 	// Dashboard States
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(null);
 	const [data, setData] = useState([]);
 	const [newUser, setNewUser] = useState({ id: null, value: null });
-
-	// Column Filters
-	const [columnFilters, setColumnFilters] = useState([{
-		id: "username",
-		value: ""
-	}]);
 
 	const GetEmployeeList = async () => {
 		try {
@@ -59,32 +30,58 @@ function Dashboard({user, updateState}) {
 		} finally {
 			setLoading(false);
 		}
-			console.log("🚀 ~ GetEmployeeList ~ res.data:", res.data)
 	}
 
 	const ValidateUser = () => {
-		console.log(user.id)
+		if (user.id) 
+			return true
+		else 
+			return false 
 	};
 
 
-	const updateNewUser = useCallback((data) => {
+	const UpdateDataRow= useCallback(() => {
+		const indexToUpdate = data.findIndex(user => user.id === newUser.id);
+
+		if (indexToUpdate !== -1) {
+		  setData(prevData => [
+			...prevData.slice(0, indexToUpdate),
+			{ ...prevData[indexToUpdate], status: newUser.status },
+			...prevData.slice(indexToUpdate + 1)
+		  ]);
+		}
+	}, [user])
+
+	const updateNewUser = (user_id, user_status) => {
 		setNewUser((prevUser) => ({
-			id: data.id,
-			value: data.value,
+			id: user_id,
+			status: user_status,
 		}));
-	},
-		[setNewUser]
-	);
+		UpdateDataRow();
+	}
 
-	const handleNewConnection = (data) => {
-		console.log('Handling new connection:', data);
+	const handleNewConnection = () => {
+		// console.log('Handling new connection:');
 	};
 
-	const handleStatusUpdate = (data) => {
-		console.log('Handling new user id & status:', data);
+	const handleStatusUpdate = () => {
+		// console.log(`Handling new user id: ${String(user.id)} ${String(user.name)} & status: ${user.status}` );
+		updateNewUser(user.id, user.status)
 	};
 
-	const newSocket = (id, status) => {
+	const handleConnectionClose = async () => {
+		const LOGIN_URL = `http://127.0.0.1:8000/logout/`
+		const res = await axios.post(LOGIN_URL, { id: user.id},)
+								.then((res) => res.data)
+								.catch((err) => console.error(err));
+		console.log(res)
+	};
+
+	const handleDefault = () => {
+		// console.log('Handling default');
+	};
+
+	const StartWebSocket = (id, status) => {
 
 		const socket = new WebSocket('ws://127.0.0.1:8000/ws/employee-socket/');
 
@@ -92,155 +89,74 @@ function Dashboard({user, updateState}) {
 			console.log('WebSocket connection opened');
 			const initialMessage = {
 				type: 'new_connection',
-				message: 'Hello from React!',
-				id: 1,
-				username: 'john_doe',
-				status: 'active',
+				id: String(user.id),
+				username: String(user.username),
+				status: String(user.status),
 			};
 			socket.send(JSON.stringify(initialMessage));
 		};
 
 		socket.onmessage = (event) => {
 			const data = JSON.parse(event.data);
-			console.log('WebSocket message received:', data);
+			console.log('WebSocket message received: ' + ++counter, data);
+			
+			setNewUser({
+				id: data.id,
+				status: data.status
+			});
 
 			// Handle different message types
 			switch (data.type) {
-				case 'new_connection':
+				case 'new_login':
 					handleNewConnection()
-				case 'status_update':
+					break;
+				case 'status_online': 
 					handleStatusUpdate()
-				default:
+					break;
+				case 'status_offline':
+					handleConnectionClose();
+					
+					setNewUser((prevUser) => ({
+						id: user_id,
+						status: user_status,
+					}));
+					break;
+				default: handleDefault()
 					break;
 			}
 		};
 
 		socket.onclose = (event) => {
 			console.log('WebSocket connection closed:', event);
+			handleConnectionClose();					
 		};
 	}
 
 	useEffect(() => {
-		ValidateUser();
 		GetEmployeeList()
-		// newSocket();
+		if (ValidateUser())
+			StartWebSocket();
 	}, [])
-
-	// Initialize React Table
-	const table = useReactTable({
-		columns,
-		data,
-		getCoreRowModel: getCoreRowModel(),
-		getFilteredRowModel: getFilteredRowModel(),
-		getPaginationRowModel: getPaginationRowModel(),
-		getSortedRowModel: getSortedRowModel(),
-		state: {
-			columnFilters,
-			//   pagination: true,
-			//   columnVisibility: true,
-			//   columnFilters: true,
-			//   rowSelection: true,
-		},
-	})
 
 	return (
 		<section className="container grid place-items-center
 							p-5">
 
-			<h1 className='text-2xl font-bold mb-5'>Employee Dashboard</h1>
-			<div className='container'>
-				<div className='flex justify-start items-center py-2'>
-					<ColumnFilter columnFilters={columnFilters}
-						setColumnFilters={setColumnFilters} />
-				</div>
-				<div className="py-2">
-					{
-						loading == false ?
-							(
-								<div className="w-full rounded-md border-2 p-2">
-									<Table>
-										<TableHeader className>
-											{table.getHeaderGroups().map((headerGroup) => (
-												<TableRow key={headerGroup.id}>
-													{headerGroup.headers.map((header) => (
-														<TableHead key={header.id}>
-															<Button className={cn("px-2")}
-																variant="ghost"
-																onClick={header.column.getToggleSortingHandler()}
-															>
-																{
-																	flexRender(header.column.columnDef.header,
-																		header.getContext())
-																}
-																{header.column.getCanSort() &&
-																	<ArrowUpDown className="ml-2 h-4 w-4"></ArrowUpDown>}
-															</Button>
-														</TableHead>
-													))}
-												</TableRow>
-											))}
-										</TableHeader>
-										<TableBody>
-											{
-												table.getRowModel().rows?.length ?
+			<h1 className='text-2xl font-bold mb-5'>Employee Dashboard {JSON.stringify(newUser.id)}
+			: {JSON.stringify(newUser.name)}</h1>
+			{
+				
+				loading? (
 
-													table.getRowModel().rows.map((row) => (
-														<TableRow key={row.id}
-															className="h-12 px-2">
-															{row.getVisibleCells().map((cell) => (
-																<TableCell key={cell.id} className="px-4">
-																	{flexRender(cell.column.columnDef.cell, cell.getContext())}
-																</TableCell>
-															))}
-														</TableRow>
-													)) :
-													<TableRow>
-														<TableCell
-															colSpan={columns.length}
-															className="h-24 text-center">
-															No results.
-														</TableCell>
-													</TableRow>
-											}
-										</TableBody>
-									</Table>
-								</div>
-							)
-							: (
-
-								<section className="container grid place-items-center
-					py-10 px-5">
-									<AiOutlineLoading3Quarters
-										className="animate-spin" />
-								</section>
-							)
-					}
-
-					<div className="flex items-center justify-end space-x-2 py-4">
-						<div className="flex-1 text-sm text-muted-foreground">
-							{table.getFilteredRowModel().rows.length} record(s).
-						</div>
-						<div className="space-x-2">
-							<Button
-								variant="outline"
-								size="sm"
-								onClick={() => table.previousPage()}
-								disabled={!table.getCanPreviousPage()}
-							>
-								Previous
-							</Button>
-							<Button
-								variant="outline"
-								size="sm"
-								onClick={() => table.nextPage()}
-								disabled={!table.getCanNextPage()}
-							>
-								Next
-							</Button>
-						</div>
-					</div>
-				</div>
-			</div>
+					<section className="container grid place-items-center
+		py-10 px-5">
+						<AiOutlineLoading3Quarters
+							className="animate-spin" />
+					</section>
+				) :
+				
+			<DataTable columns={columns} data={data} />
+			}
 		</section >
 	)
 }

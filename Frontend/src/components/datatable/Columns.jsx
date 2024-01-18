@@ -1,6 +1,7 @@
 import Cell from '@/components/datatable/Cell';
 import { Button } from '@/components/ui/button';
 import { ArrowUpDown } from 'lucide-react';
+import StatusCell from './StatusCell';
 
 const columns = [
 	{
@@ -36,7 +37,7 @@ const columns = [
 	{
 		accessorKey: "status",
 		header: "Status",
-		cell: Cell,
+		cell: StatusCell,
 	},
 ];
 
