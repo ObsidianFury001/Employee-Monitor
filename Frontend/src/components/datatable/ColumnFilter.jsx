@@ -11,7 +11,7 @@ const ColumnFilter = ({ columnFilters, setColumnFilters }) => {
 		
 		setSearchText((prev) =>  value)
 		setColumnFilters([{
-			id: "username",
+			id,
 			value
 		}])
 	}
