@@ -34,6 +34,23 @@ This is a full stack implementation of the employee montoring web application. T
     cd ./Backend/
     ```
 
+- The application uses the following folder structure.
+
+    ```bash
+    UserAPI
+    └── .env
+        ├── admin.py
+        ├── consumers.py
+        ├── models.py
+        ├── routing.py
+        ├── serializers.py
+        └── views.py
+            ...
+    ├──  settings.py
+    └── requirements.txt
+
+- `./settings.py` is the web configuration file for this application.
+
 - `./UserAPI/models.py` contains all the db models.
 
 - `./UserAPI/admin.py` is where the admin module gets registered for devs to have a look at the visual representation of the Django admin dashboard.
@@ -79,7 +96,7 @@ This is a full stack implementation of the employee montoring web application. T
     EMAIL_HASH_SALT=YOUR_SUPER_SECRET_SALT_KEY
     ```
 
-    The final setup is to add and apply the migration settings.
+    The final setup is to add and apply the migration settings for the modified modules.
 
     ```bash
     python manage.py makemigrations UserAPI    
@@ -106,8 +123,47 @@ This is a full stack implementation of the employee montoring web application. T
     cd ./Frontend/
     ```
 
+- The application uses the following folder structure:
+
+    ```bash
+    Frontend
+    └── src
+        └── components
+            └── datatable
+                ├── Cell.jsx
+                ├── ColumnFilter.jsx
+                ├── DataTable.jsx
+                ├── StatusCell.jsx
+                └── TimeStampCell.jsx
+            └── header
+                └── Header.jsx
+            └── ui
+                ...
+    └── hooks
+        └── UseCookie.jsx
+    └── pages
+        ├── Dashboard.jsx
+        └── Login.jsx
+    └── App.jsx
+    └── main.jsx
+    ```
+
+- `./src/components/` contains all custom and built in components like datatable, header and other built in copmonents.
+
+- `./src/hooks/` contains all the custom react hooks.
+
+- `./src/pages` has all the avaiable pages response.
+
+- `./src/Main.jsx` is the parent component that is rendered first.
+
+- `./src/App.jsx` is the root component and manages the application routing.
+
 1. Run the following command to start the frontend server.
 
     ```bash
     npm run dev
     ```
+
+## Demo
+
+![Demo](Demo.gif)

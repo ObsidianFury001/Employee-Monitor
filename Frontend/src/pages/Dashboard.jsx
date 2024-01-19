@@ -52,7 +52,7 @@ function Dashboard({ user, updateState }) {
 				if (x.id == user_id) {
 					
 					// console.log("RECORD UPDATED: " + x);
-					return { ...x, status: user_status, last_seen: moment(String(x.last_seen)).format('lll')};
+					return { ...x, status: user_status, last_seen: moment(Date(x.last_seen)).format('lll')};
 				}
 				return x;
 			});

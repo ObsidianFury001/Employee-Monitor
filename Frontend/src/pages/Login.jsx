@@ -26,8 +26,6 @@ function Login({ user, updateState }) {
 
 	const LogIn = async (e) => {
 		e.preventDefault()
-		console.log("Username: " + Username);
-		console.log("Password: " + Password);
 
 		if (Username && Password) {
 			try {

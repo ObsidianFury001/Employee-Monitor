@@ -106,8 +106,7 @@ function Header({ user, updateState }) {
 							<Logo />
 					</div>
 					<nav className="right flex justify-end items-center gap-1 md:gap-4">
-						{
-							
+						{							
 							<Button variant="outline" onClick={Logout}>
 									<h6 className='hidden md:block'>Logout</h6>
 									<LogOut className="m-0 md:ml-2 

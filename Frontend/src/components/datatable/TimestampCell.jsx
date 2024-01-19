@@ -6,7 +6,8 @@ const TimestampCell = ({ getValue, row, column, table }) => {
   const [formattedValue, setFormattedValue] = useState(initialValue);
 
   const formatTimestamp = (timestamp) => {
-    return moment(String(timestamp)).format('MMMM Do YYYY, h:mm:ss a')
+    console.log(moment(String(timestamp)).format('lll'))
+    return moment(String(timestamp)).format('lll')
   };
 
   const onBlur = () => {

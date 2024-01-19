@@ -1,8 +1,25 @@
-# React + Vite
+# Frontend  (React - Shadncn and TailwindCSS)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- The application uses the following folder structure:
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    ```bash
+    Frontend
+    └── src
+        └── components
+            └── datatable
+                ├── Cell.jsx
+                ├── ColumnFilter.jsx
+                ├── DataTable.jsx
+                ├── StatusCell.jsx
+                └── TimeStampCell.jsx
+            └── header
+                └── Header.jsx
+            └── ui
+    └── hooks
+        └── UseCookie.jsx
+    └── pages
+        ├── Dashboard.jsx
+        └── Login.jsx
+    └── App.jsx
+    └── main.jsx
+    ```
