@@ -1,6 +1,6 @@
 # EmployeeX overview
 
-EmployeeX is an employee monitoring application developed using Python, React and MySQL. It contains a **User Login** page and a ***mployee Dashboard** page.
+EmployeeX is an employee monitoring application developed using Python, React and MySQL. It contains a **User Login** page and a **Employee Dashboard** page.
 
 - Once the user is authorized the app navigates to the dashboard page.
 
