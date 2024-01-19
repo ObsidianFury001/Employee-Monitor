@@ -1,8 +1,25 @@
-# Overview
+# EmployeeX overview
 
-This is a full stack implementation of the employee montoring web application. The backend is developed using Python Django.
+EmployeeX is an employee monitoring application developed using Python, React and MySQL. It contains a **User Login** page and a ***mployee Dashboard** page.
 
-## Initial Setup
+- Once the user is authorized the app navigates to the dashboard page.
+
+- The Dashboard page updates the online status of each connected employee in real time,
+along with timestamps, and providing basic sorting and filtering options.
+
+![EmployeeX](./Frontend/public/assets/logo.png)
+
+## Additional features
+
+1. *Pagination* - to support large employee datasets
+
+2. *Theme toggler* - for the user use their preferred theme for better UX.
+
+## Demo
+
+![Demo](Demo.gif)
+
+## Project Setup
 
 - Clone the following repository and navigate into it.
 
@@ -26,7 +43,7 @@ This is a full stack implementation of the employee montoring web application. T
     CREATE DATABASE EMPLOYEES_DB;
     ```
 
-## 2. Backend Setup (Python - Django) `./Backend`
+## 2. [Backend Setup (Python - Django) `./Backend` title](./Backend/README.md)
 
 - Navigate into the Backend directory.
 
@@ -38,7 +55,6 @@ This is a full stack implementation of the employee montoring web application. T
 
     ```bash
     UserAPI
-    └── .env
         ├── admin.py
         ├── consumers.py
         ├── models.py
@@ -46,20 +62,25 @@ This is a full stack implementation of the employee montoring web application. T
         ├── serializers.py
         └── views.py
             ...
-    ├──  settings.py
-    └── requirements.txt
-
-- `./settings.py` is the web configuration file for this application.
-
-- `./UserAPI/models.py` contains all the db models.
+    ├── .env
+    ├── urls.py
+    └── settings.py
 
 - `./UserAPI/admin.py` is where the admin module gets registered for devs to have a look at the visual representation of the Django admin dashboard.
 
-- `./UserAPI/serializer.py` contains a custom serializer to serialize and return model records for the API response.
+- `./UserAPI/consumers.py` contains a custom consumer that listes for requests and allows authorized clients to connect to the web socket. Connected clients will be receiving real time updates through these sockets.
+
+- `./UserAPI/models.py` contains all the db models.
+
+- `./UserAPI/routing.py` routes the web socket connection end point with the ASGI consumer.
+
+- `./UserAPI/serializers.py` contains a custom `EMPLOYEES_DB` serializer to serialize and return model records for the API response.
 
 - `./UserAPI/views.py` contains all the API methods.
 
 - `./UserAPI/urls.py` contains the routes that set the API end points listners for an incoming API request.
+
+- `./settings.py` is the web configuration file for this application.
 
 ---
 
@@ -115,7 +136,7 @@ This is a full stack implementation of the employee montoring web application. T
     python manage.py runserver
     ```
 
-## 3. Frontend Setup (React - Shadncn and TailwindCSS) `./Frontend`
+## 3. [Frontend Setup (React - ShadnCN and TailwindCSS) `./Frontend`](./Frontend/README.md)
 
 - Navigate into the Frontend directory.
 
@@ -158,12 +179,10 @@ This is a full stack implementation of the employee montoring web application. T
 
 - `./src/App.jsx` is the root component and manages the application routing.
 
+---
+
 1. Run the following command to start the frontend server.
 
     ```bash
     npm run dev
     ```
-
-## Demo
-
-![Demo](Demo.gif)
