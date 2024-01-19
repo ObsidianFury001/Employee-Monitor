@@ -126,9 +126,9 @@ function Dashboard({ user, updateState }) {
 
 	return (
 		<>
-			<section className="container grid place-items-center
+			<section className="container flex flex-col justify-start items-center
 						p-5">
-				<h1 className='text-3xl font-medium leading-10'>
+				<h1 className='text-xl md:text-3xl font-medium leading-10 text-center'>
 					Employee Dashboard
 				</h1>
 				{
