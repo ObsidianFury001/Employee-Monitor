@@ -42,7 +42,7 @@ EmployeeX is an employee monitoring application developed using Python, React an
     CREATE DATABASE EMPLOYEES_DB;
     ```
 
-## 2. [Backend Setup (Python - Django) `./Backend` title](./Backend/README.md)
+## 2. [Backend Setup (Python - Django) `./Backend`](./Backend/README.md)
 
 - Navigate into the Backend directory.
 
