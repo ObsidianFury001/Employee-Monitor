@@ -6,7 +6,6 @@ const TimestampCell = ({ getValue, row, column, table }) => {
   const [formattedValue, setFormattedValue] = useState(initialValue);
 
   const formatTimestamp = (timestamp) => {
-    console.log(moment(String(timestamp)).format('lll'))
     return moment(String(timestamp)).format('lll')
   };
 

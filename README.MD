@@ -86,7 +86,7 @@ EmployeeX is an employee monitoring application developed using Python, React an
 1. Create and activate the virtual environment and install the python dependencies for the same.
 
     ```bash
-    python venv .venv
+    python -m venv .venv
     . .venv/scripts/activate        
     pip install -r requirements.txt
     ```
