@@ -50,7 +50,7 @@ class EmployeeConsumer(WebsocketConsumer):
         }
         self.send(text_data=json.dumps(res))
 
-    def disconnect(self, text_data ):
+    def disconnect(self, text_data):
         message = 'An employee has logged off: ' + str(self.user_id)
         
         res = {
@@ -59,7 +59,6 @@ class EmployeeConsumer(WebsocketConsumer):
             'id': self.user_id,
             'status': 0
         }
-        self.send(text_data=json.dumps(res))
         checkUser = EMPLOYEES_DB.objects.filter(id=self.user_id).first()
 
         if checkUser:
@@ -73,6 +72,7 @@ class EmployeeConsumer(WebsocketConsumer):
             res
         )
 
+        self.send(text_data=json.dumps(res))
         self.channel_layer.group_discard(
             self.room_name,
             self.channel_name
